@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>京杭黑色素瘤高峰论坛</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="./js/animate.min.css">
+    <link rel="stylesheet" href="./js/swiper-3.4.2.min.css">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/swiper-3.4.2.min.js"></script>
+    <script src="js/swiper.animate1.0.2.min.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+<img src="img/bglogo.png" height="0" width="0" style="display: block;"/>
+<div id="fpMusic" >
+    <audio  src="./img/bg.mp3" preload loop="loop" id="fpMusicAudio"></audio>
+
+    <div id="fpMusicPlay">
+        <div id="fpMusicPlayBtn"></div>
+    </div>
+</div>
+      <div class="swiper-container">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="img/切片" />
+            <img src="img/切片" class="ani" swiper-animate-effect="fadeInDown" swiper-animate-duration="1.5s" swiper-animate-delay="0.2s"/>
+            <img src="img/切片"  class="ani" swiper-animate-effect="fadeInUp" swiper-animate-duration="1.5s" swiper-animate-delay="0.4s" />
+        </div>
+    </div>
+</div>
+<script egret="lib" type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+
+
+
+<script>
+    //alert(location.href.split('?')[0]);
+    function share(){
+        wx.closeWindow();
+    }
+    if(location.href!=location.href.split('?')[0]){
+        location.href=location.href.split('?')[0];
+    }
+
+    $.ajax({url:'http://tflyad.cn/getwx?url='+location.href.split('?')[0],
+        success:function(data){
+            console.log(data);
+            wx.config(data);
+            wx.ready(function(){
+                //console.log(1111);
+                wx.onMenuShareAppMessage({
+                    title: '京杭黑色素瘤高峰论坛', // 分享标题
+                    desc: '2017黑色素瘤京杭高峰论坛', // 分享描述
+                    link: 'http://tflyad.cn/zelboraf', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: 'http://tflyad.cn/zelboraf/img/bglogo.png', // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                        //alert('分享成功');
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+
+                    }
+                });
+                wx.onMenuShareTimeline({
+                    title: '京杭黑色素瘤高峰论坛', // 分享标题
+                    link: 'http://tflyad.cn/zelboraf', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: 'http://tflyad.cn/zelboraf/img/bglogo.png', // 分享图标
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+                wx.checkJsApi({
+                    jsApiList: ['chooseImage'],
+                    success: function(res) {
+                    }
+
+                });
+                // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+
+
+
+            });
+            wx.error(function(res){
+                console.log(res);
+                // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            });
+
+        }})
+
+</script>
+
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            paginationClickable: true,
+            direction: 'vertical',
+            nextButton: '.swiper-button-next',
+            loop:true,
+            centeredSlides: true,
+            onInit: function(swiper) { //Swiper2.x的初始化是onFirstInit
+                swiperAnimateCache(swiper); //隐藏动画元素
+                swiperAnimate(swiper); //初始化完成开始动画
+            },
+            onSlideChangeEnd: function(swiper) {
+                swiperAnimate(swiper); //每个slide切换结束时也运行当前slide动画
+            }
+        });
+        function audioAutoPlay(id) {
+            var audio = document.getElementById(id),
+                    play = function () {
+                        audio.play();
+                        document.removeEventListener("touchstart", play, false);
+                    };
+            audio.play();
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                play();
+            }, false);
+            document.addEventListener('YixinJSBridgeReady', function () {
+                play();
+            }, false);
+            document.addEventListener("touchstart", play, false);
+        }
+        audioAutoPlay('fpMusicAudio');
+
+    </script>
+</body>
+</html>
